@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Habakkuk Designs — XML Sitemap
+  Habakkuk Designs is a single-page site: Home, Services, About, Pricing and
+  Contact are all sections of the same document (https://habakkukdesigns.co.za/),
+  reached via in-page anchors rather than separate URLs. Per Google's guidance,
+  a sitemap should list canonical page URLs only — anchor/fragment URLs
+  (e.g. /#services) are not separate pages and should not be listed separately,
+  as this can be treated as duplicate content. This sitemap therefore lists the
+  one canonical, crawlable URL for the site.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://habakkukdesigns.co.za/</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Habakkuk Designs — Digital Solutions and Creative Technology</title>
+<meta name="description" content="Habakkuk Designs is a South African digital studio building websites, brand identity, product design and creative technology. Based in South Africa, working worldwide.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ===================== NAV ===================== -->
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a href="#home" class="nav__brand" aria-label="Habakkuk Designs — Home">
+      <img src="assets/favicon.svg" alt="" class="nav__mark" width="32" height="32">
+      <span class="nav__divider" aria-hidden="true"></span>
+      <span class="nav__word">HABAKKUK<span class="nav__word-sub">DESIGNS</span></span>
+    </a>
+
+    <nav class="nav__links" id="navLinks" aria-label="Primary">
+      <a href="#home" class="nav__link" data-nav>Home</a>
+      <a href="#services" class="nav__link" data-nav>Services</a>
+      <a href="#about" class="nav__link" data-nav>About</a>
+      <a href="#pricing" class="nav__link" data-nav>Pricing</a>
+      <a href="#contact" class="nav__link" data-nav>Contact</a>
+    </nav>
+
+    <div class="nav__actions">
+      <a href="https://wa.me/27705495751?text=Hi%20William%2C%20I%27d%20like%20to%20talk%20about%20a%20project%20with%20Habakkuk%20Designs." class="btn btn--ghost-on-ink nav__cta-secondary" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="#contact" class="btn btn--signal nav__cta">Start a project</a>
+    </div>
+
+    <button class="nav__burger" id="navBurger" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero" id="home">
+    <div class="hero__grid">
+      <div class="hero__copy reveal">
+        <p class="eyebrow">HABAKKUK DESIGNS — CAPE TOWN, SOUTH AFRICA</p>
+        <h1 class="hero__title">Digital Solutions<br>and Creative<span class="hero__title-accent"> Technology.</span></h1>
+        <p class="hero__lead">We design and build the digital side of your business — websites, brand systems, product interfaces and custom creative technology — with the craft of a studio and the discipline of an engineering team.</p>
+        <div class="hero__ctas">
+          <a href="https://wa.me/27705495751?text=Hi%20William%2C%20I%27d%20like%20to%20talk%20about%20a%20project%20with%20Habakkuk%20Designs." class="btn btn--signal btn--lg" target="_blank" rel="noopener">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.3-.5.1-.2 0-.4 0-.5C10 9 9.5 7.8 9.3 7.3c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s1 2.6 1.1 2.7c.1.2 2 3 4.8 4.2.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.3-.1-.1-.3-.2-.5-.3zM12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.6 1.4 5.1L2 22l5-1.3c1.4.8 3.1 1.3 4.9 1.3 5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg>
+            Chat on WhatsApp with William
+          </a>
+          <a href="mailto:habakkukdesigns@outlook.com" class="btn btn--outline-gold btn--lg">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M2 5.5A1.5 1.5 0 0 1 3.5 4h17A1.5 1.5 0 0 1 22 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 2 18.5v-13zm2.2.5 7.8 5.6L19.8 6H4.2zM20 8.2l-7.4 5.3a1 1 0 0 1-1.2 0L4 8.2V18h16V8.2z"/></svg>
+            Email us
+          </a>
+        </div>
+        <p class="hero__note">Reply within one business day · Mon–Fri, 08:00–18:00 SAST</p>
+      </div>
+
+      <div class="hero__panel reveal reveal--delay">
+        <div class="console" id="clockConsole">
+          <div class="console__bar">
+            <span class="console__dot console__dot--live" aria-hidden="true"></span>
+            <span class="console__title">STUDIO STATUS</span>
+            <span class="console__pill" id="openStatus">—</span>
+          </div>
+
+          <div class="console__row">
+            <div class="console__label">Habakkuk Designs · South Africa</div>
+            <div class="console__time" id="businessTime">--:--:--</div>
+            <div class="console__sub" id="businessDate">—</div>
+          </div>
+
+          <div class="console__divider" aria-hidden="true"></div>
+
+          <div class="console__row">
+            <div class="console__label" id="visitorLabel">Your local time</div>
+            <div class="console__time console__time--accent" id="visitorTime">--:--:--</div>
+            <div class="console__sub" id="visitorDate">—</div>
+          </div>
+
+          <div class="console__foot" id="tzOffset">Detecting your timezone…</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero__marquee" aria-hidden="true">
+      <div class="hero__marquee-track">
+        <span>WEB DESIGN</span><span>·</span><span>BRAND IDENTITY</span><span>·</span><span>PRODUCT DESIGN</span><span>·</span><span>CREATIVE TECHNOLOGY</span><span>·</span><span>AUTOMATION</span><span>·</span>
+        <span>WEB DESIGN</span><span>·</span><span>BRAND IDENTITY</span><span>·</span><span>PRODUCT DESIGN</span><span>·</span><span>CREATIVE TECHNOLOGY</span><span>·</span><span>AUTOMATION</span><span>·</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SERVICES ===================== -->
+  <section class="section section--paper" id="services">
+    <div class="section__head reveal">
+      <p class="eyebrow eyebrow--ink">SERVICES</p>
+      <h2 class="section__title">What we build</h2>
+      <p class="section__lead">Six disciplines, one studio. We take projects from first sketch to shipped product, and keep them running afterwards.</p>
+    </div>
+
+    <div class="cards">
+      <article class="card reveal">
+        <div class="card__index">Web</div>
+        <h3 class="card__title">Web Design &amp; Development</h3>
+        <p class="card__text">Custom, responsive websites built for speed, clarity and conversion — from marketing sites to full web applications.</p>
+      </article>
+
+      <article class="card reveal">
+        <div class="card__index">Brand</div>
+        <h3 class="card__title">Brand Identity &amp; Creative Direction</h3>
+        <p class="card__text">Logos, colour and type systems, and a visual language that makes your business unmistakable across every channel.</p>
+      </article>
+
+      <article class="card reveal">
+        <div class="card__index">Product</div>
+        <h3 class="card__title">Digital Product Design (UI/UX)</h3>
+        <p class="card__text">App and platform interfaces designed around how people actually use them — wireframes, prototypes and polished UI.</p>
+      </article>
+
+      <article class="card reveal">
+        <div class="card__index">Tech</div>
+        <h3 class="card__title">Creative Technology &amp; Automation</h3>
+        <p class="card__text">Custom tools, integrations and interactive experiences that remove manual work and give your business an edge.</p>
+      </article>
+
+      <article class="card reveal">
+        <div class="card__index">Content</div>
+        <h3 class="card__title">Digital Marketing Assets</h3>
+        <p class="card__text">Social templates, ad creative and content systems, designed once and built to scale across campaigns.</p>
+      </article>
+
+      <article class="card reveal">
+        <div class="card__index">Care</div>
+        <h3 class="card__title">Maintenance &amp; Support</h3>
+        <p class="card__text">Ongoing updates, hosting guidance and technical support once you're live, so nothing is ever left to chance.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===================== ABOUT ===================== -->
+  <section class="section section--ink" id="about">
+    <div class="about">
+      <div class="about__copy reveal">
+        <p class="eyebrow">ABOUT</p>
+        <h2 class="section__title section__title--on-ink">A small studio, built for close work.</h2>
+        <p class="about__text">Habakkuk Designs is a South African digital studio led by William, working with founders and businesses who want their digital presence to actually look like the quality of what they do.</p>
+        <p class="about__text">We keep engagements small and direct on purpose — one point of contact, clear timelines, and no hand-off to a stranger halfway through the project. Every brief goes through the same process: understand the business, design with intent, build it properly, and stay reachable after launch.</p>
+        <ul class="about__list">
+          <li><span class="about__list-mark">01</span> Discovery &amp; strategy — understand the goal before touching a screen.</li>
+          <li><span class="about__list-mark">02</span> Design &amp; prototyping — a visual direction built for your audience, not a template.</li>
+          <li><span class="about__list-mark">03</span> Build &amp; launch — clean, fast, responsive, and tested before it ships.</li>
+          <li><span class="about__list-mark">04</span> Support — ongoing care once you're live.</li>
+        </ul>
+      </div>
+      <div class="about__stats reveal reveal--delay">
+        <div class="stat">
+          <div class="stat__num">Mon–Fri</div>
+          <div class="stat__label">08:00 – 18:00 SAST</div>
+        </div>
+        <div class="stat">
+          <div class="stat__num">1</div>
+          <div class="stat__label">Direct point of contact — William</div>
+        </div>
+        <div class="stat">
+          <div class="stat__num">ZA → World</div>
+          <div class="stat__label">Based in South Africa, working with clients internationally</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PRICING ===================== -->
+  <section class="section section--paper" id="pricing">
+    <div class="section__head reveal">
+      <p class="eyebrow eyebrow--ink">PRICING</p>
+      <h2 class="section__title">Simple, transparent pricing</h2>
+      <p class="section__lead">One clear starting price. Every project is quoted properly once we understand the scope — this is where the conversation begins.</p>
+    </div>
+
+    <div class="pricing reveal">
+      <div class="pricing__card">
+        <div class="pricing__top">
+          <p class="pricing__eyebrow">DIGITAL STARTER PACKAGE</p>
+          <h3 class="pricing__name">Website, built right</h3>
+        </div>
+
+        <div class="pricing__price">
+          <span class="pricing__currency">R</span><span class="pricing__amount">1,460</span>
+        </div>
+        <p class="pricing__base-note">Official base price · South African Rand (ZAR)</p>
+
+        <div class="pricing__converter">
+          <label class="pricing__currency-label" for="currencySelect">See it in your currency</label>
+          <select class="pricing__currency-select" id="currencySelect" aria-describedby="currencyConvert">
+            <option value="ZAR">ZAR — South African Rand (official)</option>
+            <option value="USD">USD — US Dollar</option>
+            <option value="GBP">GBP — British Pound</option>
+            <option value="EUR">EUR — Euro</option>
+            <option value="AUD">AUD — Australian Dollar</option>
+            <option value="CAD">CAD — Canadian Dollar</option>
+            <option value="NZD">NZD — New Zealand Dollar</option>
+            <option value="AED">AED — UAE Dirham</option>
+            <option value="SAR">SAR — Saudi Riyal</option>
+            <option value="INR">INR — Indian Rupee</option>
+            <option value="CNY">CNY — Chinese Yuan</option>
+            <option value="JPY">JPY — Japanese Yen</option>
+            <option value="CHF">CHF — Swiss Franc</option>
+            <option value="BWP">BWP — Botswana Pula</option>
+            <option value="NAD">NAD — Namibian Dollar</option>
+            <option value="ZMW">ZMW — Zambian Kwacha</option>
+            <option value="NGN">NGN — Nigerian Naira</option>
+            <option value="KES">KES — Kenyan Shilling</option>
+          </select>
+        </div>
+        <p class="pricing__convert" id="currencyConvert" aria-live="polite">Detecting your local currency…</p>
+
+        <ul class="pricing__features">
+          <li>Custom-designed, fully responsive website</li>
+          <li>Up to 5 pages, built around your content</li>
+          <li>Mobile, tablet &amp; desktop optimisation</li>
+          <li>Contact &amp; WhatsApp integration</li>
+          <li>Basic on-page SEO setup</li>
+          <li>One round of revisions included</li>
+        </ul>
+
+        <a href="https://wa.me/27705495751?text=Hi%20William%2C%20I%27d%20like%20to%20get%20the%20Digital%20Starter%20Package%20(R1%2C460)." class="btn btn--signal btn--lg pricing__cta" target="_blank" rel="noopener">Get this package</a>
+        <p class="pricing__footnote">Larger builds, brand identity and creative technology projects are quoted individually based on scope — get in touch for a custom quote.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CONTACT ===================== -->
+  <section class="section section--ink" id="contact">
+    <div class="section__head reveal">
+      <p class="eyebrow">CONTACT</p>
+      <h2 class="section__title section__title--on-ink">Let's start the conversation</h2>
+      <p class="section__lead section__lead--on-ink">Tell us a little about the project, or reach out directly — whichever is easier.</p>
+    </div>
+
+    <div class="contact reveal">
+      <div class="contact__details">
+        <a class="contact__row" href="https://wa.me/27705495751?text=Hi%20William%2C%20I%27d%20like%20to%20talk%20about%20a%20project%20with%20Habakkuk%20Designs." target="_blank" rel="noopener">
+          <span class="contact__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.3-.5.1-.2 0-.4 0-.5C10 9 9.5 7.8 9.3 7.3c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s1 2.6 1.1 2.7c.1.2 2 3 4.8 4.2.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.3-.1-.1-.3-.2-.5-.3zM12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.6 1.4 5.1L2 22l5-1.3c1.4.8 3.1 1.3 4.9 1.3 5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg>
+          </span>
+          <span class="contact__text">
+            <span class="contact__label">WhatsApp / Phone</span>
+            <span class="contact__value">+27 70 549 5751</span>
+          </span>
+        </a>
+
+        <a class="contact__row" href="mailto:habakkukdesigns@outlook.com">
+          <span class="contact__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M2 5.5A1.5 1.5 0 0 1 3.5 4h17A1.5 1.5 0 0 1 22 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 2 18.5v-13zm2.2.5 7.8 5.6L19.8 6H4.2zM20 8.2l-7.4 5.3a1 1 0 0 1-1.2 0L4 8.2V18h16V8.2z"/></svg>
+          </span>
+          <span class="contact__text">
+            <span class="contact__label">Email</span>
+            <span class="contact__value">habakkukdesigns@outlook.com</span>
+          </span>
+        </a>
+
+        <div class="contact__row contact__row--static">
+          <span class="contact__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm.75 5v5.4l4.2 2.5-.75 1.25-5-3V7h1.55z"/></svg>
+          </span>
+          <span class="contact__text">
+            <span class="contact__label">Business hours</span>
+            <span class="contact__value">Monday – Friday, 08:00 – 18:00 (SAST)</span>
+          </span>
+        </div>
+
+        <div class="contact__row contact__row--static">
+          <span class="contact__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C7 2 3 6 3 10.5 3 16 12 22 12 22s9-6 9-11.5C21 6 17 2 12 2zm0 11.5A3.5 3.5 0 1 1 12 6a3.5 3.5 0 0 1 0 7.5z"/></svg>
+          </span>
+          <span class="contact__text">
+            <span class="contact__label">Based in</span>
+            <span class="contact__value">South Africa — working with clients worldwide</span>
+          </span>
+        </div>
+
+        <div class="console console--compact" id="footerClock">
+          <div class="console__bar">
+            <span class="console__dot console__dot--live" aria-hidden="true"></span>
+            <span class="console__title">CURRENT TIME</span>
+          </div>
+          <div class="console__row console__row--split">
+            <div>
+              <div class="console__label">Cape Town</div>
+              <div class="console__time console__time--sm" id="businessTime2">--:--:--</div>
+            </div>
+            <div>
+              <div class="console__label" id="visitorLabel2">Your time</div>
+              <div class="console__time console__time--sm console__time--accent" id="visitorTime2">--:--:--</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <form class="contact__form" id="contactForm" novalidate>
+        <p class="contact__form-title">Send a project brief</p>
+
+        <label class="field">
+          <span class="field__label">Name</span>
+          <input class="field__input" type="text" name="name" id="cf-name" required autocomplete="name">
+        </label>
+
+        <label class="field">
+          <span class="field__label">Email</span>
+          <input class="field__input" type="email" name="email" id="cf-email" required autocomplete="email">
+        </label>
+
+        <label class="field">
+          <span class="field__label">What do you need?</span>
+          <select class="field__input" name="service" id="cf-service">
+            <option>Website Design &amp; Development</option>
+            <option>Brand Identity &amp; Creative Direction</option>
+            <option>Digital Product Design (UI/UX)</option>
+            <option>Creative Technology &amp; Automation</option>
+            <option>Digital Marketing Assets</option>
+            <option>Maintenance &amp; Support</option>
+            <option>Not sure yet</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span class="field__label">Project details</span>
+          <textarea class="field__input" name="message" id="cf-message" rows="4" required></textarea>
+        </label>
+
+        <button type="submit" class="btn btn--signal btn--lg field__submit">Send brief via email</button>
+        <p class="contact__form-note" id="formNote">This opens your email app with everything pre-filled, addressed to habakkukdesigns@outlook.com.</p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+  <div class="footer__inner">
+    <a href="#home" class="footer__brand">
+      <img src="assets/favicon.svg" alt="" width="26" height="26">
+      <span class="footer__divider" aria-hidden="true"></span>
+      <span>HABAKKUK DESIGNS</span>
+    </a>
+    <p class="footer__slogan">Digital Solutions and Creative Technology</p>
+
+    <nav class="footer__links" aria-label="Footer">
+      <a href="#home">Home</a>
+      <a href="#services">Services</a>
+      <a href="#about">About</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="footer__meta">
+      <span>© <span id="year"></span> Habakkuk Designs. All rights reserved.</span>
+      <span>+27 70 549 5751 · habakkukdesigns@outlook.com</span>
+    </div>
+  </div>
+</footer>
+
+<button class="backtotop" id="backToTop" aria-label="Back to top">↑</button>
+
+<script src="js/main.js"></script>
+</body>
+</html>
