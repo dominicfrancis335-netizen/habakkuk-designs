@@ -65,6 +65,15 @@ This project deploys to Vercel with zero build configuration — it's a static s
 4. Once deployed, point the `habakkukdesigns.co.za` domain at the Vercel project (Vercel → Project → Settings → Domains) so the live URLs match those declared in `sitemap.xml`.
 5. After going live, verify `https://habakkukdesigns.co.za/sitemap.xml` and `https://habakkukdesigns.co.za/robots.txt` both load, then submit the sitemap in Google Search Console.
 
+## Portfolio live previews
+
+The Portfolio has four categories (Social Apps, Learning Apps, Courses, Books). Each website is a card with a sandboxed live preview (`<iframe>`) and an **Open in new tab** button.
+
+- `js/portfolio.js` loads each preview as it scrolls into view.
+- `api/embed-check.js` is a Vercel serverless function. It reads each site's `X-Frame-Options` / `Content-Security-Policy: frame-ancestors` headers, because browsers can't. Sites that refuse to be framed show a clear message instead of a broken frame; the button always works. If the function is unavailable (e.g. opening the files locally), previews are simply attempted.
+- To allow a site to be previewed, don't send `X-Frame-Options: DENY/SAMEORIGIN`, and either omit `frame-ancestors` or include `https://habakkukdesigns.co.za` in it.
+- **Adding a website:** copy an existing `<article class="portfolio__card reveal" data-host="...">` block into the right category's `.portfolio__items` container in `index.html`, change the host in the 4 places, and add the host to `SITES` in `api/embed-check.js`.
+
 ## Editing content
 
 - **Text/copy:** edit directly in `index.html` — every section is clearly commented (`<!-- ===== SERVICES ===== -->` etc.).

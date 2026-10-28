@@ -273,7 +273,13 @@ input,select,textarea{ font-family:inherit; font-size:1rem; }
 /* ==========================================================================
    PORTFOLIO
    ========================================================================== */
-.portfolio{ max-width:720px; margin:0 auto; display:flex; flex-direction:column; gap:1.75rem; }
+.portfolio{ max-width:var(--maxw); margin:0 auto; display:flex; flex-direction:column; gap:3.25rem; }
+.portfolio__category{ display:flex; flex-direction:column; gap:1.75rem; }
+.portfolio__category-title{
+  font-family:var(--f-display); font-size:1.55rem; font-weight:600; margin:0;
+  padding-bottom:.8rem; border-bottom:1px solid var(--line-paper);
+}
+.portfolio__items{ display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:1.75rem; }
 .portfolio__card{
   background:var(--ink); color:var(--on-ink); border-radius:10px; padding:2.8rem 2.6rem;
   position:relative; overflow:hidden; border:1px solid var(--ink-3);
@@ -294,6 +300,23 @@ input,select,textarea{ font-family:inherit; font-size:1rem; }
   border:1px solid var(--line-ink); border-radius:20px; padding:.4rem .85rem;
 }
 .portfolio__cta{ width:100%; max-width:280px; }
+
+/* live website previews */
+.portfolio__card{ display:flex; flex-direction:column; min-width:0; }
+.portfolio__name--host{ font-size:1.2rem; overflow-wrap:anywhere; }
+.portfolio__frame{
+  position:relative; height:460px; margin:1.2rem 0 1.6rem; background:#fff;
+  border:1px solid var(--ink-3); border-radius:6px; overflow:hidden;
+}
+.portfolio__iframe{ display:block; width:100%; height:100%; border:0; background:#fff; }
+.portfolio__fallback{
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center; text-align:center;
+  padding:1.5rem; background:var(--ink-2);
+}
+.portfolio__fallback[hidden]{ display:none; }
+.portfolio__fallback-text{ margin:0; max-width:34ch; font-size:.95rem; line-height:1.6; color:var(--on-ink-muted); }
+.portfolio__noscript{ margin:0; padding:1.5rem; font-size:.92rem; line-height:1.6; color:var(--on-paper-muted); }
+.portfolio__card .portfolio__cta{ margin-top:auto; }
 
 /* ==========================================================================
    ABOUT
@@ -429,6 +452,7 @@ textarea.field__input{ resize:vertical; min-height:100px; }
   .about{ grid-template-columns:1fr; }
   .contact{ grid-template-columns:1fr; }
   .cards{ grid-template-columns:repeat(2, 1fr); }
+  .portfolio__items{ grid-template-columns:minmax(0, 1fr); }
 }
 
 @media (max-width: 760px){
@@ -455,6 +479,7 @@ textarea.field__input{ resize:vertical; min-height:100px; }
   .pricing__amount{ font-size:3rem; }
   .portfolio__card{ padding:2.1rem 1.5rem; }
   .portfolio__cta{ max-width:none; }
+  .portfolio__frame{ height:420px; }
   .contact__form{ padding:1.6rem; }
 }
 
