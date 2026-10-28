@@ -5,17 +5,19 @@
      PORTFOLIO LIVE PREVIEWS
      - Lazy-loads each website preview when it nears the viewport.
      - Asks /api/embed-check (Vercel function) which sites allow framing.
-     - Sites that block framing get a clear message; every card always
-       has an "Open in new tab" button.
-     - If the check is unavailable (offline, local file server), the
-       previews are still attempted and the button remains.
+     - Sites that allow it show a live, browsable preview.
+     - Sites that block framing show a real screenshot of THEIR OWN
+       homepage (/api/screenshot?host=...), linking to the website.
+     - If a screenshot can't be captured, a clear message for that
+       website is shown instead. No placeholder or reused images.
+     - Every card always has an "Open in new tab" button.
      ============================================================ */
   var cards = document.querySelectorAll(".portfolio__card[data-host]");
   if (!cards.length) return;
 
   var MESSAGES = {
-    blocked: "This website doesn't allow itself to be previewed inside another site. Use the button below to open it in a new tab.",
-    unavailable: "The preview couldn't be loaded right now. Use the button below to open the website in a new tab."
+    loading: "Loading a screenshot of this website…",
+    noshot: "A screenshot of this website couldn't be captured automatically. Use the button below to open it in a new tab."
   };
 
   function fetchWithTimeout(url, ms) {
@@ -36,32 +38,67 @@
     .then(function (data) { return data && data.sites ? data.sites : null; })
     .catch(function () { return null; });
 
-  function showFallback(card, kind) {
+  function setMessage(card, text) {
+    var box = card.querySelector(".portfolio__fallback");
+    var msg = card.querySelector(".portfolio__fallback-text");
+    if (msg) msg.textContent = text;
+    if (box) box.hidden = false;
+  }
+
+  // Replace the live frame with a real screenshot of this card's own homepage.
+  function showScreenshot(card) {
+    var host = card.getAttribute("data-host");
     var frame = card.querySelector(".portfolio__frame");
     var iframe = card.querySelector(".portfolio__iframe");
-    var box = card.querySelector(".portfolio__fallback");
-    if (!frame || !box) return;
+    if (!frame || card.getAttribute("data-shot")) return;
+    card.setAttribute("data-shot", "1");
+
     if (iframe) {
       iframe.removeAttribute("src");
       iframe.hidden = true;
     }
-    var text = box.querySelector(".portfolio__fallback-text");
-    if (text) text.textContent = MESSAGES[kind] || MESSAGES.unavailable;
-    box.hidden = false;
+    setMessage(card, MESSAGES.loading);
+
+    var link = document.createElement("a");
+    link.className = "portfolio__shot-link";
+    link.href = "https://" + host + "/";
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.setAttribute("aria-label", "Open " + host + " in a new tab");
+
+    var img = new Image();
+    img.className = "portfolio__shot";
+    img.alt = "Screenshot of the " + host + " homepage";
+    img.decoding = "async";
+    img.onload = function () {
+      var label = document.createElement("span");
+      label.className = "portfolio__shot-label";
+      label.textContent = "SCREENSHOT";
+      link.appendChild(img);
+      link.appendChild(label);
+      frame.appendChild(link);
+      frame.classList.add("portfolio__frame--shot");
+      var box = card.querySelector(".portfolio__fallback");
+      if (box) box.hidden = true;
+    };
+    img.onerror = function () {
+      setMessage(card, MESSAGES.noshot);
+    };
+    img.src = "/api/screenshot?host=" + encodeURIComponent(host);
   }
 
   function loadCard(card) {
     var iframe = card.querySelector(".portfolio__iframe");
-    if (!iframe || iframe.getAttribute("src")) return;
+    if (!iframe || iframe.getAttribute("src") || card.getAttribute("data-shot")) return;
     var host = card.getAttribute("data-host");
 
     checkPromise.then(function (sites) {
       var info = sites && sites[host];
       if (info && info.status === "blocked") {
-        showFallback(card, "blocked");
+        showScreenshot(card);
         return;
       }
-      iframe.addEventListener("error", function () { showFallback(card, "unavailable"); });
+      iframe.addEventListener("error", function () { showScreenshot(card); });
       iframe.setAttribute("src", iframe.getAttribute("data-src"));
     });
   }

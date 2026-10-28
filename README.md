@@ -67,12 +67,14 @@ This project deploys to Vercel with zero build configuration — it's a static s
 
 ## Portfolio live previews
 
-The Portfolio has four categories (Social Apps, Learning Apps, Courses, Books). Each website is a card with a sandboxed live preview (`<iframe>`) and an **Open in new tab** button.
+The Portfolio has four categories (Social Apps, Learning Apps, Courses, Books). Each website is a card with a preview and an **Open in new tab** button.
 
 - `js/portfolio.js` loads each preview as it scrolls into view.
-- `api/embed-check.js` is a Vercel serverless function. It reads each site's `X-Frame-Options` / `Content-Security-Policy: frame-ancestors` headers, because browsers can't. Sites that refuse to be framed show a clear message instead of a broken frame; the button always works. If the function is unavailable (e.g. opening the files locally), previews are simply attempted.
-- To allow a site to be previewed, don't send `X-Frame-Options: DENY/SAMEORIGIN`, and either omit `frame-ancestors` or include `https://habakkukdesigns.co.za` in it.
-- **Adding a website:** copy an existing `<article class="portfolio__card reveal" data-host="...">` block into the right category's `.portfolio__items` container in `index.html`, change the host in the 4 places, and add the host to `SITES` in `api/embed-check.js`.
+- `api/embed-check.js` (Vercel function) reads each site's `X-Frame-Options` / `Content-Security-Policy: frame-ancestors` headers, because browsers can't. Sites that allow framing show a live, browsable preview.
+- Sites that **block** framing show a real screenshot of **their own** homepage, taken by `api/screenshot.js` (labelled SCREENSHOT, and clicking it opens the website). Screenshots come from Microlink first, then thum.io as a backup, and Vercel caches each one for 7 days. If a screenshot can't be captured, that card shows a clear message instead - never a made-up or shared image.
+- Optional: add a `MICROLINK_API_KEY` environment variable in Vercel for higher Microlink limits (the free tier works without one).
+- If the functions are unavailable (e.g. opening the files locally), previews are simply attempted, or the message is shown, and the button always works.
+- **Adding a website:** copy an existing `<article class="portfolio__card reveal" data-host="...">` block into the right category's `.portfolio__items` container in `index.html`, change the host in the 4 places, and add the host to `api/_sites.js`.
 
 ## Editing content
 

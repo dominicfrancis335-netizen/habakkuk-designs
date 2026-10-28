@@ -6,27 +6,10 @@
   /api/embed-check once, then shows a live preview for sites that allow
   framing and a message + "Open in new tab" button for sites that don't.
 
-  Only the hosts in SITES below can be checked (no open proxy / SSRF).
-  When you add a portfolio website, add its host here too.
+  Only the hosts listed in api/_sites.js can be checked (no open proxy / SSRF).
 */
 
-const SITES = [
-  "habakkukai.co.za",
-  "troy.habakkukai.co.za",
-  "solomon.habakkukai.co.za",
-  "ohs.habakkukai.co.za",
-  "supplychain.habakkukai.co.za",
-  "businessmanagement.habakkukai.co.za",
-  "digitalmanagement.habakkukai.co.za",
-  "nurselearn.habakkukai.co.za",
-  "officeadmin.habakkukai.co.za",
-  "bookaccount.habakkukai.co.za",
-  "humanresource.habakkukai.co.za",
-  "projectmanagement.habakkukai.co.za",
-  "riseaboveyourself.habakkukbooks.co.za",
-  "mindsetofmillionaires.habakkukbooks.co.za",
-  "forbiddenlove.habakkukbooks.co.za"
-];
+const { SITES } = require("./_sites");
 
 // Hosts allowed to frame the previews (the portfolio's own domain).
 const PARENT_HOSTS = ["habakkukdesigns.co.za", "www.habakkukdesigns.co.za"];
