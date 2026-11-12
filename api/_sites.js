@@ -22,6 +22,8 @@ module.exports = {
     "projectmanagement.habakkukai.co.za",
     "riseaboveyourself.habakkukbooks.co.za",
     "mindsetofmillionaires.habakkukbooks.co.za",
-    "forbiddenlove.habakkukbooks.co.za"
+    "forbiddenlove.habakkukbooks.co.za",
+    "float.habakkukai.co.za",
+    "certify.habakkukai.co.za"
   ]
 };
