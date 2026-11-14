@@ -246,10 +246,13 @@
 
   var pricingEl = document.getElementById("pricing");
   var convertEl = document.getElementById("currencyConvert");
-  var currencySelectEl = document.getElementById("currencySelect");
-  var tableBodyEl = document.getElementById("priceTable");
+  var openBtnEl = document.getElementById("currencyOpen");
+  var openTextEl = document.getElementById("currencyOpenText");
+  var dialogEl = document.getElementById("currencyDialog");
+  var gridEl = document.getElementById("currencyGrid");
+  var closeBtnEl = document.getElementById("currencyClose");
 
-  // The manually-selectable currency list (must match the <select> options in index.html).
+  // The manually-selectable currencies (shown in the pop-up window).
   var SELECTABLE_CURRENCIES = ["ZAR","USD","GBP","EUR","AUD","CAD","NZD","AED","SAR","INR","CNY","JPY","CHF","BWP","NAD","ZMW","NGN","KES"];
 
   // ---- MASTER PRICES (ZAR): the single source of truth --------------------
@@ -285,15 +288,12 @@
     return formatAmount(zarAmount * rates[currency], currency);
   }
 
-  function currencyName(code) {
-    if (currencySelectEl) {
-      for (var i = 0; i < currencySelectEl.options.length; i++) {
-        var o = currencySelectEl.options[i];
-        if (o.value === code) return o.text.replace(/^[A-Z]{3}\s+—\s+/, "");
-      }
-    }
-    return code;
-  }
+  var CURRENCY_NAMES = {
+    ZAR: "South African Rand", USD: "US Dollar", GBP: "British Pound", EUR: "Euro", AUD: "Australian Dollar",
+    CAD: "Canadian Dollar", NZD: "New Zealand Dollar", AED: "UAE Dirham", SAR: "Saudi Riyal", INR: "Indian Rupee",
+    CNY: "Chinese Yuan", JPY: "Japanese Yen", CHF: "Swiss Franc", BWP: "Botswana Pula", NAD: "Namibian Dollar",
+    ZMW: "Zambian Kwacha", NGN: "Nigerian Naira", KES: "Kenyan Shilling"
+  };
 
   function applyMasterToPage() {
     var baseText = fmtZar(BASE_ZAR), extraText = fmtZar(EXTRA_PICTURE_ZAR);
@@ -309,23 +309,24 @@
     }
   }
 
-  function renderTable(selected) {
-    if (!tableBodyEl) return;
-    tableBodyEl.innerHTML = "";
+  // Pop-up window: one option per currency, each showing both prices from the shared rates.
+  function renderDialog(selected) {
+    if (!gridEl) return;
+    gridEl.innerHTML = "";
     SELECTABLE_CURRENCIES.forEach(function (code) {
-      var tr = document.createElement("tr");
-      if (code === "ZAR") tr.className = "is-official";
-      if (code === selected) tr.className += " is-selected";
-      var th = document.createElement("th");
-      th.scope = "row";
-      var c = document.createElement("span"); c.className = "pricing__table-code"; c.textContent = code;
-      var n = document.createElement("span"); n.className = "pricing__table-name";
-      n.textContent = code === "ZAR" ? "South African Rand (official)" : currencyName(code);
-      th.appendChild(c); th.appendChild(n);
-      var t1 = document.createElement("td"); t1.textContent = priceIn(code, BASE_ZAR);
-      var t2 = document.createElement("td"); t2.textContent = priceIn(code, EXTRA_PICTURE_ZAR);
-      tr.appendChild(th); tr.appendChild(t1); tr.appendChild(t2);
-      tableBodyEl.appendChild(tr);
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "currency-opt";
+      b.setAttribute("role", "option");
+      b.setAttribute("data-code", code);
+      b.setAttribute("aria-selected", code === selected ? "true" : "false");
+      var c = document.createElement("span"); c.className = "currency-opt__code"; c.textContent = code;
+      var n = document.createElement("span"); n.className = "currency-opt__name";
+      n.textContent = CURRENCY_NAMES[code] + (code === "ZAR" ? " (official)" : "");
+      var p = document.createElement("span"); p.className = "currency-opt__price";
+      p.textContent = priceIn(code, BASE_ZAR) + " + " + priceIn(code, EXTRA_PICTURE_ZAR) + "/pic";
+      b.appendChild(c); b.appendChild(n); b.appendChild(p);
+      gridEl.appendChild(b);
     });
   }
 
@@ -344,7 +345,8 @@
   var currentCurrency = "ZAR";
   function renderAll() {
     applyMasterToPage();
-    renderTable(currentCurrency);
+    if (openTextEl) openTextEl.textContent = currentCurrency + " — " + CURRENCY_NAMES[currentCurrency] + (currentCurrency === "ZAR" ? " (official)" : "");
+    renderDialog(currentCurrency);
     renderConversion(currentCurrency);
   }
 
@@ -378,11 +380,30 @@
   var initialCurrency = (detected && SELECTABLE_CURRENCIES.indexOf(detected) !== -1) ? detected : "ZAR";
   currentCurrency = initialCurrency;
 
-  if (currencySelectEl) {
-    currencySelectEl.value = initialCurrency;
-    currencySelectEl.addEventListener("change", function () {
-      currentCurrency = this.value;
+  function openDialog() {
+    if (!dialogEl) return;
+    if (typeof dialogEl.showModal === "function") dialogEl.showModal(); else dialogEl.setAttribute("open", "");
+    var sel = gridEl && gridEl.querySelector('[aria-selected="true"]');
+    if (sel) sel.focus();
+  }
+  function closeDialog() {
+    if (!dialogEl) return;
+    if (typeof dialogEl.close === "function") dialogEl.close(); else dialogEl.removeAttribute("open");
+    if (openBtnEl) openBtnEl.focus();
+  }
+  if (openBtnEl) openBtnEl.addEventListener("click", openDialog);
+  if (closeBtnEl) closeBtnEl.addEventListener("click", closeDialog);
+  if (dialogEl) {
+    // click on the dark backdrop closes the window
+    dialogEl.addEventListener("click", function (e) { if (e.target === dialogEl) closeDialog(); });
+  }
+  if (gridEl) {
+    gridEl.addEventListener("click", function (e) {
+      var btn = e.target.closest ? e.target.closest(".currency-opt") : null;
+      if (!btn) return;
+      currentCurrency = btn.getAttribute("data-code");
       renderAll();
+      closeDialog();
     });
   }
 
