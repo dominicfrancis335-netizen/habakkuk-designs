@@ -199,12 +199,12 @@
 
   /* ============================================================
      CURRENCY CONVERSION
-     Base price: R1,460 (ZAR) — official price, always shown.
+     MASTER PRICES (ZAR) live in ONE place: the data-price-zar and
+     data-extra-picture-zar attributes on <section id="pricing"> in index.html.
+     Every displayed price in every currency is calculated from them.
      Automatically detects the visitor's likely currency from their
      browser locale and shows an approximate converted amount.
      ============================================================ */
-  var BASE_ZAR = 1460;
-
   // Locale region -> ISO currency code (major regions covered)
   var REGION_CURRENCY = {
     ZA: "ZAR", US: "USD", GB: "GBP", IE: "EUR", DE: "EUR", FR: "EUR", ES: "EUR", IT: "EUR",
@@ -232,17 +232,6 @@
     VND: 1400, PKR: 15.5, BDT: 6.6, RUB: 5.1, UAH: 2.3
   };
 
-  var CURRENCY_LOCALE = {
-    USD: "en-US", EUR: "de-DE", GBP: "en-GB", CAD: "en-CA", AUD: "en-AU", NZD: "en-NZ",
-    INR: "en-IN", NGN: "en-NG", KES: "en-KE", GHS: "en-GH", AED: "ar-AE", SAR: "ar-SA",
-    CNY: "zh-CN", JPY: "ja-JP", KRW: "ko-KR", SGD: "en-SG", HKD: "zh-HK", CHF: "de-CH",
-    SEK: "sv-SE", NOK: "nb-NO", DKK: "da-DK", PLN: "pl-PL", CZK: "cs-CZ", HUF: "hu-HU",
-    RON: "ro-RO", TRY: "tr-TR", BRL: "pt-BR", MXN: "es-MX", ARS: "es-AR", ZMW: "en-ZM",
-    MZN: "pt-MZ", BWP: "en-BW", NAD: "en-NA", MUR: "en-MU", EGP: "ar-EG", MAD: "ar-MA",
-    ILS: "he-IL", PHP: "en-PH", IDR: "id-ID", MYR: "ms-MY", THB: "th-TH", VND: "vi-VN",
-    PKR: "ur-PK", BDT: "bn-BD", RUB: "ru-RU", UAH: "uk-UA"
-  };
-
   function detectCurrency() {
     try {
       var locales = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || "en-ZA"];
@@ -255,88 +244,150 @@
     return null; // unknown — treat as ZAR / no conversion needed
   }
 
-  function formatAmount(amount, currency) {
-    try {
-      return new Intl.NumberFormat(CURRENCY_LOCALE[currency] || "en-US", {
-        style: "currency", currency: currency, maximumFractionDigits: amount >= 100 ? 0 : 2
-      }).format(amount);
-    } catch (e) {
-      return currency + " " + amount.toFixed(0);
-    }
-  }
-
+  var pricingEl = document.getElementById("pricing");
   var convertEl = document.getElementById("currencyConvert");
   var currencySelectEl = document.getElementById("currencySelect");
+  var tableBodyEl = document.getElementById("priceTable");
 
   // The manually-selectable currency list (must match the <select> options in index.html).
   var SELECTABLE_CURRENCIES = ["ZAR","USD","GBP","EUR","AUD","CAD","NZD","AED","SAR","INR","CNY","JPY","CHF","BWP","NAD","ZMW","NGN","KES"];
 
-  function renderConversion(currency, amount, live) {
+  // ---- MASTER PRICES (ZAR): the single source of truth --------------------
+  function readMaster(attr, fallback) {
+    var v = pricingEl ? parseFloat(pricingEl.getAttribute(attr)) : NaN;
+    return isFinite(v) && v > 0 ? v : fallback;
+  }
+  var BASE_ZAR = readMaster("data-price-zar", 1460);
+  var EXTRA_PICTURE_ZAR = readMaster("data-extra-picture-zar", 15);
+
+  // ---- ONE set of exchange rates (units per 1 ZAR) used for EVERY currency ----
+  var rates = { ZAR: 1 };
+  Object.keys(FALLBACK_RATES_PER_ZAR).forEach(function (k) { rates[k] = FALLBACK_RATES_PER_ZAR[k]; });
+
+  function fmtZar(n) {
+    return "R" + n.toLocaleString("en-US", { maximumFractionDigits: 2 });
+  }
+
+  function formatAmount(amount, currency) {
+    var digits = (currency === "JPY" || amount >= 100) ? 0 : 2;
+    try {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency", currency: currency, minimumFractionDigits: digits, maximumFractionDigits: digits
+      }).format(amount);
+    } catch (e) {
+      return currency + " " + amount.toFixed(digits);
+    }
+  }
+
+  // The ONLY place a price in any currency is calculated.
+  function priceIn(currency, zarAmount) {
+    if (currency === "ZAR") return fmtZar(zarAmount);
+    return formatAmount(zarAmount * rates[currency], currency);
+  }
+
+  function currencyName(code) {
+    if (currencySelectEl) {
+      for (var i = 0; i < currencySelectEl.options.length; i++) {
+        var o = currencySelectEl.options[i];
+        if (o.value === code) return o.text.replace(/^[A-Z]{3}\s+—\s+/, "");
+      }
+    }
+    return code;
+  }
+
+  function applyMasterToPage() {
+    var baseText = fmtZar(BASE_ZAR), extraText = fmtZar(EXTRA_PICTURE_ZAR);
+    document.querySelectorAll('[data-price="base"]').forEach(function (el) { el.textContent = baseText; });
+    document.querySelectorAll('[data-price="extra"]').forEach(function (el) { el.textContent = extraText; });
+    document.querySelectorAll('[data-price="base-number"]').forEach(function (el) {
+      el.textContent = BASE_ZAR.toLocaleString("en-US", { maximumFractionDigits: 2 });
+    });
+    var cta = document.getElementById("pricingCta");
+    if (cta) {
+      cta.href = "https://wa.me/27691637652?text=" +
+        encodeURIComponent("Hi Dominic, I'd like to get the Digital Starter Package (" + baseText + ").");
+    }
+  }
+
+  function renderTable(selected) {
+    if (!tableBodyEl) return;
+    tableBodyEl.innerHTML = "";
+    SELECTABLE_CURRENCIES.forEach(function (code) {
+      var tr = document.createElement("tr");
+      if (code === "ZAR") tr.className = "is-official";
+      if (code === selected) tr.className += " is-selected";
+      var th = document.createElement("th");
+      th.scope = "row";
+      var c = document.createElement("span"); c.className = "pricing__table-code"; c.textContent = code;
+      var n = document.createElement("span"); n.className = "pricing__table-name";
+      n.textContent = code === "ZAR" ? "South African Rand (official)" : currencyName(code);
+      th.appendChild(c); th.appendChild(n);
+      var t1 = document.createElement("td"); t1.textContent = priceIn(code, BASE_ZAR);
+      var t2 = document.createElement("td"); t2.textContent = priceIn(code, EXTRA_PICTURE_ZAR);
+      tr.appendChild(th); tr.appendChild(t1); tr.appendChild(t2);
+      tableBodyEl.appendChild(tr);
+    });
+  }
+
+  function renderConversion(currency) {
     if (!convertEl) return;
     if (!currency || currency === "ZAR") {
-      convertEl.textContent = "R1,460 ZAR is the official price — no conversion needed.";
+      convertEl.textContent = fmtZar(BASE_ZAR) + " ZAR is the official price — no conversion needed. Every additional picture: " + fmtZar(EXTRA_PICTURE_ZAR) + ".";
       return;
     }
-    var formatted = formatAmount(amount, currency);
-    convertEl.textContent = "≈ " + formatted + " " + currency + (live ? "" : " (approx.)") +
-      " — approximate, based on current exchange rates. R1,460 ZAR remains the official price.";
+    convertEl.textContent = "≈ " + priceIn(currency, BASE_ZAR) + " " + currency + " for the website design, + " +
+      priceIn(currency, EXTRA_PICTURE_ZAR) + " per additional picture — approximate, based on exchange rates. " +
+      fmtZar(BASE_ZAR) + " ZAR remains the official price.";
+  }
+
+  // Everything that shows a price is re-rendered together from the same master + rates.
+  var currentCurrency = "ZAR";
+  function renderAll() {
+    applyMasterToPage();
+    renderTable(currentCurrency);
+    renderConversion(currentCurrency);
   }
 
   // Frankfurter (ECB-backed, free, no API key) supports a defined set of currencies.
   var frankfurterSupported = ["AUD","BGN","BRL","CAD","CHF","CNY","CZK","DKK","EUR","GBP","HKD","HUF","IDR","ILS","INR","ISK","JPY","KRW","MXN","MYR","NOK","NZD","PHP","PLN","RON","SEK","SGD","THB","TRY","USD"];
 
-  function runConversion(currency) {
-    if (!currency || currency === "ZAR") {
-      renderConversion(currency, 0, true);
-      return;
-    }
-
-    if (!convertEl) return;
-    convertEl.textContent = "Converting to " + currency + "…";
-
-    if (frankfurterSupported.indexOf(currency) !== -1) {
-      var controller = ("AbortController" in window) ? new AbortController() : null;
-      var timeout = setTimeout(function () { if (controller) controller.abort(); }, 5000);
-
-      fetch("https://api.frankfurter.app/latest?amount=" + BASE_ZAR + "&from=ZAR&to=" + currency, controller ? { signal: controller.signal } : {})
-        .then(function (res) {
-          clearTimeout(timeout);
-          if (!res.ok) throw new Error("rate fetch failed");
-          return res.json();
-        })
-        .then(function (data) {
-          var amount = data && data.rates && data.rates[currency];
-          if (typeof amount === "number") {
-            renderConversion(currency, amount, true);
-          } else {
-            throw new Error("no rate in response");
-          }
-        })
-        .catch(function () {
-          var fallback = FALLBACK_RATES_PER_ZAR[currency];
-          if (fallback) renderConversion(currency, BASE_ZAR * fallback, false);
-          else if (convertEl) convertEl.textContent = "R1,460 ZAR — the official base price.";
-        });
-    } else {
-      var rate = FALLBACK_RATES_PER_ZAR[currency];
-      if (rate) renderConversion(currency, BASE_ZAR * rate, false);
-      else if (convertEl) convertEl.textContent = "R1,460 ZAR — the official base price.";
-    }
+  // One request for all supported currencies. Live rates replace the fallback
+  // rates in the shared `rates` object, then everything is re-rendered at once.
+  function loadLiveRates() {
+    var wanted = SELECTABLE_CURRENCIES.filter(function (c) { return frankfurterSupported.indexOf(c) !== -1; });
+    var controller = ("AbortController" in window) ? new AbortController() : null;
+    var timeout = setTimeout(function () { if (controller) controller.abort(); }, 5000);
+    fetch("https://api.frankfurter.app/latest?from=ZAR&to=" + wanted.join(","), controller ? { signal: controller.signal } : {})
+      .then(function (res) {
+        clearTimeout(timeout);
+        if (!res.ok) throw new Error("rate fetch failed");
+        return res.json();
+      })
+      .then(function (data) {
+        var live = data && data.rates;
+        if (!live) return;
+        wanted.forEach(function (c) { if (typeof live[c] === "number" && live[c] > 0) rates[c] = live[c]; });
+        renderAll();
+      })
+      .catch(function () { /* keep the fallback rates; the page is already fully rendered */ });
   }
 
   // Auto-detect the visitor's currency first; fall back to ZAR if it isn't
   // one of the selectable currencies. The visitor can always override manually.
   var detected = detectCurrency();
   var initialCurrency = (detected && SELECTABLE_CURRENCIES.indexOf(detected) !== -1) ? detected : "ZAR";
+  currentCurrency = initialCurrency;
 
   if (currencySelectEl) {
     currencySelectEl.value = initialCurrency;
     currencySelectEl.addEventListener("change", function () {
-      runConversion(this.value);
+      currentCurrency = this.value;
+      renderAll();
     });
   }
 
-  runConversion(initialCurrency);
+  renderAll();
+  loadLiveRates();
 
   /* ============================================================
      CONTACT FORM -> mailto (no backend required)

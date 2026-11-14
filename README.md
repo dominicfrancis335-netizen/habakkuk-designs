@@ -80,7 +80,7 @@ The Portfolio has four categories (Social Apps, Learning Apps, Courses, Books). 
 
 - **Text/copy:** edit directly in `index.html` — every section is clearly commented (`<!-- ===== SERVICES ===== -->` etc.).
 - **Colours/fonts:** all design tokens live at the top of `css/styles.css` under `:root { ... }`.
-- **Price:** update the `R1,460` figure in `index.html` (in the Pricing section) **and** the `BASE_ZAR` constant near the top of the currency section in `js/main.js`, so the converter stays in sync.
+- **Price:** change the two master values on `<section id="pricing">` in `index.html`: `data-price-zar` (website price, currently 1460) and `data-extra-picture-zar` (price per extra picture, currently 15). Every price on the page — the big amount, the "R15" line, the WhatsApp message, the currency selector line and the all-currencies table — is calculated from these two numbers, so all currencies always stay consistent. Also update the static fallback text in the same section if you want it to match without JavaScript.
 - **Contact details:** phone/WhatsApp number and email appear in a few places (nav, hero, pricing CTA, contact section, footer) — search for `27691637652` and `habakkukweb@outlook.com` to update everywhere at once.
 - **Business hours:** update the visible text in the Contact section, and the `isBusinessOpen()` logic in `js/main.js` (currently Mon–Fri, 08:00–18:00, `Africa/Johannesburg`).
 
