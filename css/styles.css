@@ -31,12 +31,13 @@
   /* layout */
   --maxw: 1180px;
   --nav-h: 76px;
+  --alert-h: 46px;
   --radius: 3px;
   --ease: cubic-bezier(.22,.8,.32,1);
 }
 
 *,*::before,*::after{ box-sizing:border-box; }
-html{ scroll-behavior:smooth; scroll-padding-top: calc(var(--nav-h) + 12px); }
+html{ scroll-behavior:smooth; scroll-padding-top: calc(var(--nav-h) + var(--alert-h) + 12px); }
 @media (prefers-reduced-motion: reduce){
   html{ scroll-behavior:auto; }
   *,*::before,*::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
@@ -79,7 +80,7 @@ input,select,textarea{ font-family:inherit; font-size:1rem; }
    NAV — solid background always, for readability
    ========================================================================== */
 .nav{
-  position:fixed; inset:0 0 auto 0; height:var(--nav-h); z-index:100;
+  position:fixed; inset:var(--alert-h) 0 auto 0; height:var(--nav-h); z-index:100;
   background:var(--ink); /* solid, always readable */
   border-bottom:1px solid var(--line-ink);
   transition:box-shadow .3s var(--ease);
@@ -153,11 +154,33 @@ input,select,textarea{ font-family:inherit; font-size:1rem; }
 .btn--lg{ padding:1rem 1.9rem; font-size:.98rem; }
 
 /* ==========================================================================
+   NOTICE BAR (glowing sign at the very top)
+   ========================================================================== */
+.alert-bar{
+  position:fixed; inset:0 0 auto 0; height:var(--alert-h); z-index:110;
+  display:flex; align-items:center; justify-content:center; padding:0 1rem;
+  background:linear-gradient(180deg, #1c1826, #0e0b0a);
+  border-bottom:2px solid var(--signal);
+  box-shadow:0 0 14px rgba(242,128,142,.55), 0 0 34px rgba(242,128,142,.28);
+  animation:alertGlow 2.4s ease-in-out infinite;
+}
+.alert-bar__text{
+  margin:0; text-align:center; font-family:var(--f-mono); font-weight:700; letter-spacing:.09em;
+  font-size:clamp(.8rem, 3.4vw, 1.02rem); line-height:1.3; color:#fff; text-wrap:balance;
+  text-shadow:0 0 6px rgba(242,128,142,.95), 0 0 16px rgba(242,128,142,.7), 0 0 30px rgba(242,128,142,.45);
+}
+@keyframes alertGlow{
+  0%,100%{ box-shadow:0 0 10px rgba(242,128,142,.4), 0 0 24px rgba(242,128,142,.2); }
+  50%{ box-shadow:0 0 18px rgba(242,128,142,.75), 0 0 44px rgba(242,128,142,.4); }
+}
+@media (prefers-reduced-motion: reduce){ .alert-bar{ animation:none; } }
+
+/* ==========================================================================
    HERO
    ========================================================================== */
 .hero{
   background:var(--ink); color:var(--on-ink);
-  padding:calc(var(--nav-h) + 4.5rem) 1.5rem 0;
+  padding:calc(var(--nav-h) + var(--alert-h) + 4.5rem) 1.5rem 0;
   overflow:hidden;
   position:relative;
 }
@@ -500,9 +523,9 @@ textarea.field__input{ resize:vertical; min-height:100px; }
 }
 
 @media (max-width: 760px){
-  :root{ --nav-h:64px; }
+  :root{ --nav-h:64px; --alert-h:58px; }
   .nav__links{
-    position:fixed; top:var(--nav-h); left:0; right:0; background:var(--ink);
+    position:fixed; top:calc(var(--nav-h) + var(--alert-h)); left:0; right:0; background:var(--ink);
     flex-direction:column; align-items:flex-start; gap:0; border-bottom:1px solid var(--line-ink);
     transform:translateY(-8px); opacity:0; pointer-events:none; transition:.25s var(--ease);
     padding:.5rem 1.5rem 1rem;
@@ -513,7 +536,7 @@ textarea.field__input{ resize:vertical; min-height:100px; }
   .nav__actions .nav__cta-secondary{ display:inline-flex; padding:.6rem 1rem; font-size:.82rem; }
   .nav__burger{ display:flex; }
 
-  .hero{ padding-top:calc(var(--nav-h) + 2.5rem); }
+  .hero{ padding-top:calc(var(--nav-h) + var(--alert-h) + 2.5rem); }
   .hero__ctas{ flex-direction:column; align-items:stretch; }
   .hero__ctas .btn{ width:100%; }
 
